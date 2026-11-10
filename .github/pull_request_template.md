@@ -32,12 +32,6 @@ Relates to #XXXX
 ## Did you verify the followings
 <!-- Prepare each script to validate Using: `$manifest = "manifest-name"` -->
 
-### Add/Modify a description in the manifest?
-<!-- Using: `.\bin\describe.ps1 $manifest` -->
-- [ ] 👍 yes
-- [ ] 🙋 yes, but I need help
-- [ ] 🙅 no, because they aren't needed
-
 ### Check URLs?
 <!-- Using: `.\bin\checkurls.ps1 $manifest` -->
 - [ ] 👍 yes
@@ -56,7 +50,7 @@ Relates to #XXXX
 - [ ] 🙋 yes, but I need help
 - [ ] 🙅 no, because they aren't needed
 
-### Format the json manifest?
+### Format the .json manifest?
 <!-- Using: `.\bin\formatjson.ps1 $manifest`-->
 - [ ] 👍 yes
 - [ ] 🙋 yes, but I need help
@@ -88,7 +82,19 @@ Relates to #XXXX
 - [ ] 🙋 yes, but I need help
 - [ ] 🙅 no, because they aren't needed
 
+### Installation steps to perform?
+
+- [ ] 👍 yes
+- [ ] 🙋 yes, but I need help
+- [ ] 🙅 no, because they aren't needed
+
 ### Post-installation steps to perform?
+
+- [ ] 👍 yes
+- [ ] 🙋 yes, but I need help
+- [ ] 🙅 no, because they aren't needed
+
+### Uninstallation steps to perform?
 
 - [ ] 👍 yes
 - [ ] 🙋 yes, but I need help
