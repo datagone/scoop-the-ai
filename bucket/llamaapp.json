@@ -1,0 +1,82 @@
+{
+    "version": "0.14.1",
+    "description": "Windows Llama App Companion — llama.cpp tray app for Windows",
+    "homepage": "https://github.com/ggml-org/Llama-Windows",
+    "license": "MIT",
+    "notes": [
+        "This portable version of the app 'Requires Windows build 10.0.26100 or newer' and offers : ",
+        "  - Right-click -> 'Open With' on .gguf model files",
+        "  - llama:// deep links (will open the flyout only)",
+        "  - But 'Send to Llama' in the Windows Share menu is not available."
+    ],
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.14.1/LlamaApp_0.14.1.0_x64.msix#/dl.zip",
+            "hash": "1bd05c6ce8b5147636a37ec6508f7cac9090e1d9d320975d0dd4bf546e9d95cc"
+        },
+        "arm64": {
+            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.14.1/LlamaApp_0.14.1.0_ARM64.msix#/dl.zip",
+            "hash": "1a23fc3e431226d3e792a90f7063c760a8beb081e5c7761b5afc8f3644d7a411"
+        }
+    },
+    "bin": "LlamaApp.exe",
+    "shortcuts": [
+        [
+            "LlamaApp.exe",
+            "Llama"
+        ]
+    ],
+    "installer": {
+        "script": [
+            "# .gguf: Open With entry (registers the app to handle .gguf files)",
+            "New-Item -Path 'HKCU:\\Software\\Classes\\Llama.gguf\\shell\\open\\command' -Force | Out-Null",
+            "Set-ItemProperty -Path 'HKCU:\\Software\\Classes\\Llama.gguf' -Name '(Default)' -Value 'GGUF Model'",
+            "Set-ItemProperty -Path 'HKCU:\\Software\\Classes\\Llama.gguf\\shell\\open\\command' -Name '(Default)' -Value ('\"' + \"$dir\\LlamaApp.exe\" + '\" \"%1\"')",
+            "New-Item -Path 'HKCU:\\Software\\Classes\\.gguf\\OpenWithProgids' -Force | Out-Null",
+            "New-ItemProperty -Path 'HKCU:\\Software\\Classes\\.gguf\\OpenWithProgids' -Name 'Llama.gguf' -PropertyType String -Value '' -Force | Out-Null",
+            "",
+            "# llama:// protocol (classic URL protocol registration)",
+            "New-Item -Path 'HKCU:\\Software\\Classes\\llama\\shell\\open\\command' -Force | Out-Null",
+            "Set-ItemProperty -Path 'HKCU:\\Software\\Classes\\llama' -Name '(Default)' -Value 'URL:Chat with Llama'",
+            "New-ItemProperty -Path 'HKCU:\\Software\\Classes\\llama' -Name 'URL Protocol' -PropertyType String -Value '' -Force | Out-Null",
+            "Set-ItemProperty -Path 'HKCU:\\Software\\Classes\\llama\\shell\\open\\command' -Name '(Default)' -Value ('\"' + \"$dir\\LlamaApp.exe\" + '\" \"%1\"')",
+            "",
+            "# Tell the shell associations changed - Explorer caches OpenWithProgids, so without this the entry only appears after an Explorer restart.",
+            "$code = '[System.Runtime.InteropServices.DllImport(\"shell32.dll\")] public static extern void SHChangeNotify(int wEventId, int uFlags, System.IntPtr dwItem1, System.IntPtr dwItem2);'",
+            "Add-Type -MemberDefinition $code -Namespace Win32 -Name LlamaShellNotify",
+            "[Win32.LlamaShellNotify]::SHChangeNotify(0x08000000, 0, [System.IntPtr]::Zero, [System.IntPtr]::Zero)"
+        ]
+    },
+    "uninstaller": {
+        "script": [
+            "# Remove our .gguf Open With entry — only if it still points at this install.",
+            "$cmd = (Get-ItemProperty -Path 'HKCU:\\Software\\Classes\\Llama.gguf\\shell\\open\\command' -Name '(Default)' -ErrorAction SilentlyContinue).'(Default)'",
+            "if ($cmd -like \"*$dir*\") {",
+            "    Remove-Item -Path 'HKCU:\\Software\\Classes\\Llama.gguf' -Recurse -Force -ErrorAction SilentlyContinue",
+            "    Remove-ItemProperty -Path 'HKCU:\\Software\\Classes\\.gguf\\OpenWithProgids' -Name 'Llama.gguf' -Force -ErrorAction SilentlyContinue",
+            "}",
+            "",
+            "# Remove llama:// protocol registration — same ownership guard.",
+            "$pcmd = (Get-ItemProperty -Path 'HKCU:\\Software\\Classes\\llama\\shell\\open\\command' -Name '(Default)' -ErrorAction SilentlyContinue).'(Default)'",
+            "if ($pcmd -like \"*$dir*\") { Remove-Item -Path 'HKCU:\\Software\\Classes\\llama' -Recurse -Force -ErrorAction SilentlyContinue }",
+            "",
+            "# Tell the shell associations changed - Explorer caches OpenWithProgids, so without this the entry stays visible in cached menus until Explorer restarts.",
+            "$code = '[System.Runtime.InteropServices.DllImport(\"shell32.dll\")] public static extern void SHChangeNotify(int wEventId, int uFlags, System.IntPtr dwItem1, System.IntPtr dwItem2);'",
+            "Add-Type -MemberDefinition $code -Namespace Win32 -Name LlamaShellNotify",
+            "[Win32.LlamaShellNotify]::SHChangeNotify(0x08000000, 0, [System.IntPtr]::Zero, [System.IntPtr]::Zero)"
+        ]
+    },
+    "checkver": {
+        "github": "https://github.com/ggml-org/Llama-Windows"
+    },
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v$version/LlamaApp_$version.0_x64.msix#/dl.zip"
+            },
+            "arm64": {
+                "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v$version/LlamaApp_$version.0_ARM64.msix#/dl.zip"
+            }
+        }
+    }
+}
