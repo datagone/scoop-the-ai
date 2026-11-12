@@ -4,11 +4,30 @@
     "homepage": "https://github.com/ggml-org/Llama-Windows",
     "license": "MIT",
     "notes": [
-        "This portable version of the app 'Requires Windows build 10.0.26100 or newer' and offers : ",
+        "Requires: ",
+        "  - a separate LLM runtime (llama.cpp, etc.) to be installed (via scoop or other means)",
+        "  - Windows build 10.0.26100 or newer",
+        "",
+        "This portable version of the app and offers:",
         "  - Right-click -> 'Open With' on .gguf model files",
         "  - llama:// deep links (will open the flyout only)",
         "  - But 'Send to Llama' in the Windows Share menu is not available."
     ],
+    "suggest": {
+        "llama.cpp runtime": [
+            "llama.cpp-cpu",
+            "llama.cpp-cu117",
+            "llama.cpp-cu124-dll",
+            "llama.cpp-cu124",
+            "llama.cpp-cu13-dll",
+            "llama.cpp-cu13",
+            "llama.cpp-hip-radeon)",
+            "llama.cpp-opencl",
+            "llama.cpp-openvino",
+            "llama.cpp-sycl",
+            "llama.cpp-vulkan"
+        ]
+    },
     "architecture": {
         "64bit": {
             "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.14.1/LlamaApp_0.14.1.0_x64.msix#/dl.zip",
