@@ -1,5 +1,5 @@
 {
-    "version": "0.14.1",
+    "version": "0.15.0",
     "description": "Windows Llama App Companion — llama.cpp tray app for Windows",
     "homepage": "https://github.com/ggml-org/Llama-Windows",
     "license": "MIT",
@@ -30,12 +30,12 @@
     },
     "architecture": {
         "64bit": {
-            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.14.1/LlamaApp_0.14.1.0_x64.msix#/dl.zip",
-            "hash": "1bd05c6ce8b5147636a37ec6508f7cac9090e1d9d320975d0dd4bf546e9d95cc"
+            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.15.0/LlamaApp_0.15.0.0_x64.msix#/dl.zip",
+            "hash": "8d72d785afbf91a39d542f546db38d2c867e6b5366ca4a05491e5ef4d71f14fb"
         },
         "arm64": {
-            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.14.1/LlamaApp_0.14.1.0_ARM64.msix#/dl.zip",
-            "hash": "1a23fc3e431226d3e792a90f7063c760a8beb081e5c7761b5afc8f3644d7a411"
+            "url": "https://github.com/ggml-org/Llama-Windows/releases/download/v0.15.0/LlamaApp_0.15.0.0_ARM64.msix#/dl.zip",
+            "hash": "75ffdc1ab38ea715cc76bec0b3c64df0c8f7ce0b2ae0fdecd4d4061c898d89db"
         }
     },
     "bin": "LlamaApp.exe",
